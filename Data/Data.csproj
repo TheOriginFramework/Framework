@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C1B43BC0-1A4B-475C-8E9F-FEE757D769ED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TOF.Framework.Data</RootNamespace>
+    <AssemblyName>TOF.Framework.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ColumnPropertyMapOfT.cs" />
+    <Compile Include="DataTypeRegistrationContainer.cs" />
+    <Compile Include="DbClient.cs" />
+    <Compile Include="DbConfiguration.cs" />
+    <Compile Include="DbExceptionCollector.cs" />
+    <Compile Include="DbSchemaInitilizer.cs" />
+    <Compile Include="DbWedge.cs" />
+    <Compile Include="DefaultColumnProperty.cs" />
+    <Compile Include="DefaultDbProcedureInvoker.cs" />
+    <Compile Include="DefaultDbProcedureInvokerOfT.cs" />
+    <Compile Include="DefaultDbProcedureStrategy.cs" />
+    <Compile Include="DefaultDbProcedureStrategyOfT.cs" />
+    <Compile Include="DefaultModelStrategy.cs" />
+    <Compile Include="DefaultModelStrategyOfT.cs" />
+    <Compile Include="DefaultParameterBindingInfo.cs" />
+    <Compile Include="DefaultPropertyBindingInfo.cs" />
+    <Compile Include="DefaultQuery.cs" />
+    <Compile Include="DefaultQueryOrderByExpression.cs" />
+    <Compile Include="DefaultQueryOrderByExpressionOfT.cs" />
+    <Compile Include="DefaultQueryParameter.cs" />
+    <Compile Include="DefaultQueryWhereExpression.cs" />
+    <Compile Include="DefaultQueryWhereExpressionOfT.cs" />
+    <Compile Include="DefaultSelectPagingBase.cs" />
+    <Compile Include="DefaultSelectPagingContextForDynamicOfT.cs" />
+    <Compile Include="DefaultSelectPagingContextOfT.cs" />
+    <Compile Include="DefaultSqlQuery.cs" />
+    <Compile Include="DefaultSqlQueryExecutor.cs" />
+    <Compile Include="DefaultTable.cs" />
+    <Compile Include="DefaultTableOfT.cs" />
+    <Compile Include="Exceptions\DbEnvironmentException.cs" />
+    <Compile Include="Exceptions\DbMultipleOperationsException.cs" />
+    <Compile Include="Exceptions\DbOperationException.cs" />
+    <Compile Include="Exceptions\ModelStrategyException.cs" />
+    <Compile Include="Expressions\SqlFunctions\DateTime\SqlQueryFunctionDateTimeDayNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\DateTime\SqlQueryFunctionDateTimeHourNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\DateTime\SqlQueryFunctionDateTimeMinuteNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\DateTime\SqlQueryFunctionDateTimeMonthNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\DateTime\SqlQueryFunctionDateTimeNowNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\DateTime\SqlQueryFunctionDateTimeSecondNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\DateTime\SqlQueryFunctionDateTimeYearNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\SqlFunctionsLoader.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionConcatNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionContainsNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionEndsWithNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionIndexOfNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionIsNullOrEmptyNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionLengthNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionStartsWithNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionSubstringNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionToLowerNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionToUpperNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionTrimEndNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionTrimNode.cs" />
+    <Compile Include="Expressions\SqlFunctions\String\SqlQueryFunctionTrimStartNode.cs" />
+    <Compile Include="Expressions\SqlQueryAddExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryAndAlsoExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryCallExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryConstantExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryDivideExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryEqualExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryExpressionFactory.cs" />
+    <Compile Include="Expressions\SqlQueryExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryExpressionParser.cs" />
+    <Compile Include="Expressions\SqlQueryGetMemberNameExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryGreaterThanExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryLessThanExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryMemberAccessExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryMultiplyExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryNewExpressionRenderColumnsNode.cs" />
+    <Compile Include="Expressions\SqlQueryNewTypeRenderColumnNode.cs" />
+    <Compile Include="Expressions\SqlQueryNotEqualExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryNotExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryOrElseExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryParameterExpressionNode.cs" />
+    <Compile Include="Expressions\SqlQueryParameterExpressionRenderColumnsNode.cs" />
+    <Compile Include="Expressions\SqlQuerySubtractExpressionNode.cs" />
+    <Compile Include="IColumnPropertyMap.cs" />
+    <Compile Include="IDbProcedure.cs" />
+    <Compile Include="IDbProcedureInvoker.cs" />
+    <Compile Include="IDbProcedureInvokerOfT.cs" />
+    <Compile Include="IDbProcedureStrategy.cs" />
+    <Compile Include="IDbProcedureStrategyOfT.cs" />
+    <Compile Include="IModelStrategy.cs" />
+    <Compile Include="IModelStrategyOfT.cs" />
+    <Compile Include="IParameterBindingInfo.cs" />
+    <Compile Include="IPropertyBindingInfo.cs" />
+    <Compile Include="IQuery.cs" />
+    <Compile Include="IQueryExpressionNode.cs" />
+    <Compile Include="IQueryExpressionParser.cs" />
+    <Compile Include="IQueryFunctionNode.cs" />
+    <Compile Include="IQueryOrderByExpression.cs" />
+    <Compile Include="IQueryOrderByExpressionOfT.cs" />
+    <Compile Include="IQueryPagingConfiguration.cs" />
+    <Compile Include="IQueryPagingContext.cs" />
+    <Compile Include="IQueryPagingContextOfT.cs" />
+    <Compile Include="IQueryPagingInfo.cs" />
+    <Compile Include="IQueryParameter.cs" />
+    <Compile Include="IQueryWhereExpression.cs" />
+    <Compile Include="IQueryWhereExpressionOfT.cs" />
+    <Compile Include="ISqlExecutionProvider.cs" />
+    <Compile Include="ISqlExecutionTransactionProvider.cs" />
+    <Compile Include="ISqlParameterChainNode.cs" />
+    <Compile Include="ISqlParameterParser.cs" />
+    <Compile Include="ISqlQuery.cs" />
+    <Compile Include="ISqlQueryDecrementalStrategy.cs" />
+    <Compile Include="ISqlQueryExecutor.cs" />
+    <Compile Include="ISqlQueryIncrementalStrategy.cs" />
+    <Compile Include="ISqlQueryStrategy.cs" />
+    <Compile Include="ITable.cs" />
+    <Compile Include="ITableOfT.cs" />
+    <Compile Include="ModelStrategyBuilder.cs" />
+    <Compile Include="OrderByDirection.cs" />
+    <Compile Include="ParameterFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryTypes.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterBooleanNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterByteNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterBytesNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterCharNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterDateTimeNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterDecimalNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterDoubleNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterIntegerNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterLongNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterShortNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterSingleNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterStringNode.cs" />
+    <Compile Include="SqlDataStrategies\SqlParameterUniqueidentifierNode.cs" />
+    <Compile Include="SqlExecutionProviders\SqlExecutionProvider.cs" />
+    <Compile Include="SqlParameterNode.cs" />
+    <Compile Include="SqlParameterParser.cs" />
+    <Compile Include="SqlSelectAggregateMode.cs" />
+    <Compile Include="SqlSelectQuery.cs" />
+    <Compile Include="SqlStrategies\SqlDeleteStrategy.cs" />
+    <Compile Include="SqlStrategies\SqlDeleteStrategyOfT.cs" />
+    <Compile Include="SqlStrategies\SqlInsertStrategy.cs" />
+    <Compile Include="SqlStrategies\SqlInsertStrategyOfT.cs" />
+    <Compile Include="SqlStrategies\SqlSelectAggregateStrategy.cs" />
+    <Compile Include="SqlStrategies\SqlSelectAggregateStrategyOfT.cs" />
+    <Compile Include="SqlStrategies\SqlSelectPagingStrategy.cs" />
+    <Compile Include="SqlStrategies\SqlSelectPagingStrategyOfT.cs" />
+    <Compile Include="SqlStrategies\SqlSelectStrategy.cs" />
+    <Compile Include="SqlStrategies\SqlSelectStrategyOfT.cs" />
+    <Compile Include="SqlStrategies\SqlUpdateStrategy.cs" />
+    <Compile Include="SqlStrategies\SqlUpdateStrategyOfT.cs" />
+    <Compile Include="SqlStrategyBase.cs" />
+    <Compile Include="SqlStrategyBaseOfT.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="TableJoinDirection.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="WhereDirective.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Configuration\Configuration.csproj">
+      <Project>{963ace83-f4e5-4165-a29c-7d830548f231}</Project>
+      <Name>Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contracts\Contracts.csproj">
+      <Project>{6de0fac5-68b0-41cc-9ac4-4f846c264cb4}</Project>
+      <Name>Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data.Annotations\Data.Annotations.csproj">
+      <Project>{e5033157-6cf3-4ac0-8d53-a5133ad547e3}</Project>
+      <Name>Data.Annotations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DependencyInjection\DependencyInjection.csproj">
+      <Project>{1db4655f-cf4c-45e7-9d33-6228e2dbac1c}</Project>
+      <Name>DependencyInjection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{5424aac1-f8c8-47ff-b045-4cf07999942c}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
