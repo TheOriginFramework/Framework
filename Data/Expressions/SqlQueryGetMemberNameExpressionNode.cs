@@ -101,6 +101,14 @@ namespace TOF.Framework.Data.Expressions
                     };
                     return callExpressionNode.Parse(exp.Operand);
                 }
+                else if (exp.Operand is UnaryExpression)
+                {
+                    var unaryExpression = new SqlQueryConstantExpressionNode()
+                    {
+                        ModelStrategy = this.ModelStrategy
+                    };
+                    return unaryExpression.Parse(exp.Operand);
+                }
                 else //if (exp is method)
                 {
                     throw new NotSupportedException("ERROR_NOT_SUPPORTED_EXPRESSION_TYPE");

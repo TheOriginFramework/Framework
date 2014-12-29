@@ -676,7 +676,7 @@ namespace TOF.Framework.Data
         {
             ISqlQueryStrategy queryStrategy = new SqlStrategies.SqlSelectStrategy<TModel>(
                 ModelStrategy,
-               FilterExpressions: this._queryWhereExpressions,
+                FilterExpressions: this._queryWhereExpressions,
                 OrderByExpressions: this._queryOrderByExpressions);
             this._tableLastQueryStatement = queryStrategy.RenderQuery();
             var parameters = queryStrategy.RenderParameters();
@@ -685,22 +685,33 @@ namespace TOF.Framework.Data
 
             ISqlExecutionProvider executionProvider = Utils.GetDbExecutionProvider(this._connectionString);
             ISqlExecutionTransactionProvider transactionProvider = executionProvider as ISqlExecutionTransactionProvider;
+            IDataReader reader = null;
+            List<TModel> items = new List<TModel>();
 
             executionProvider.Open();
-            IDataReader reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
 
-            List<TModel> items = new List<TModel>();
-            var records = Utils.GetDataRecords(reader);
+            try
+            {
+                reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
+                items = new List<TModel>();
+                var records = Utils.GetDataRecords(reader);
 
-            foreach (var record in records)
-                items.Add(Utils.BindingDataRecordToModel<TModel>(record, ModelStrategy.GetModelPropertyBindings()));
-
-            reader.Close();
-            executionProvider.Close();
-
-            // clean where and order by conditions.
-            this._queryWhereExpressions.Clear();
-            this._queryOrderByExpressions.Clear();
+                foreach (var record in records)
+                    items.Add(Utils.BindingDataRecordToModel<TModel>(record, ModelStrategy.GetModelPropertyBindings()));                
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                reader.Close();
+                executionProvider.Close();        
+                
+                // clean where and order by conditions.
+                this._queryWhereExpressions.Clear();
+                this._queryOrderByExpressions.Clear();
+            }
 
             return items;
         }
@@ -721,42 +732,52 @@ namespace TOF.Framework.Data
             ISqlExecutionTransactionProvider transactionProvider = executionProvider as ISqlExecutionTransactionProvider;
             SqlQueryNewTypeRenderColumnNode selectorParser = new Expressions.SqlQueryNewTypeRenderColumnNode(ModelStrategy);
             IDictionary<string, string> columns = selectorParser.Parse(Selector.Body);
+            IDataReader reader = null;
+            List<dynamic> items = new List<dynamic>();
 
             executionProvider.Open();
-            IDataReader reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
-
-            List<dynamic> items = new List<dynamic>();
-            var records = Utils.GetDataRecords(reader);
-
-            foreach (var record in records)
+            try
             {
-                dynamic item = new ExpandoObject();
-                IDictionary<string, object> itemProps = item as IDictionary<string, object>;
+                reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
+                items = new List<dynamic>();
+                var records = Utils.GetDataRecords(reader);
 
-                foreach (var column in columns)
+                foreach (var record in records)
                 {
-                    try
+                    dynamic item = new ExpandoObject();
+                    IDictionary<string, object> itemProps = item as IDictionary<string, object>;
+
+                    foreach (var column in columns)
                     {
-                        if (reader.GetOrdinal(column.Value.Trim()) >= 0)
-                            ((IDictionary<string, object>)item).Add(column.Key.Trim(), reader.GetValue(reader.GetOrdinal(column.Value.Trim())));
-                        else
+                        try
+                        {
+                            if (reader.GetOrdinal(column.Value.Trim()) >= 0)
+                                ((IDictionary<string, object>)item).Add(column.Key.Trim(), reader.GetValue(reader.GetOrdinal(column.Value.Trim())));
+                            else
+                                ((IDictionary<string, object>)item).Add(column.Key.Trim(), DBNull.Value);
+                        }
+                        catch (IndexOutOfRangeException)
+                        {
                             ((IDictionary<string, object>)item).Add(column.Key.Trim(), DBNull.Value);
+                        }
                     }
-                    catch (IndexOutOfRangeException)
-                    {
-                        ((IDictionary<string, object>)item).Add(column.Key.Trim(), DBNull.Value);
-                    }
+
+                    items.Add(item);
                 }
-
-                items.Add(item);
             }
+            catch (Exception e)
+            {
+                throw;
+            }
+            finally
+            {
+                reader.Close();
+                executionProvider.Close();
 
-            reader.Close();
-            executionProvider.Close();
-
-            // clean where and order by conditions.
-            this._queryWhereExpressions.Clear();
-            this._queryOrderByExpressions.Clear();
+                // clean where and order by conditions.
+                this._queryWhereExpressions.Clear();
+                this._queryOrderByExpressions.Clear();
+            }
 
             return items;
         }
