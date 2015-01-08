@@ -105,8 +105,10 @@ namespace TOF.Framework.Data.Expressions
             {
                 if (exp.Type == typeof(string))
                 {
+                    object v = Expression.Lambda(exp).Compile().DynamicInvoke();
+
                     expressionBuilder.Append("'");
-                    expressionBuilder.Append(Expression.Lambda(exp).Compile().DynamicInvoke().ToString());
+                    expressionBuilder.Append(v ?? string.Empty);
                     expressionBuilder.Append("'");
                 }
                 else if (exp.Type == typeof(DateTime))
