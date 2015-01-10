@@ -96,7 +96,12 @@ namespace TOF.Framework.Data
             IDictionary<string, string> columns = selectorParser.Parse(this._selector.Body);
 
             executionProvider.Open();
-            var records = executionProvider.ExecuteQuery(sql, parameters);
+            var reader = executionProvider.ExecuteQuery(sql, parameters);
+
+            if (reader == null)
+                throw new InvalidOperationException("E_DATAREADER_RETURNS_NULL");
+
+            var records = Utils.GetDataRecords(reader);
 
             List<dynamic> items = new List<dynamic>();
 
@@ -123,6 +128,7 @@ namespace TOF.Framework.Data
                 items.Add(item);
             }
 
+            reader.Close();
             executionProvider.Close();
 
             return items;

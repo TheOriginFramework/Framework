@@ -66,11 +66,18 @@ namespace TOF.Framework.Data
                 this._sqlExecutionProvider.Open();
             
             List<T> items = new List<T>();
-            var records = this._sqlExecutionProvider.ExecuteQuery(Query.GetSqlStatement(), Query.GetParameters());
+            var reader = this._sqlExecutionProvider.ExecuteQuery(Query.GetSqlStatement(), Query.GetParameters());
+
+            if (reader == null)
+                throw new InvalidOperationException("E_READER_RETURNS_NULL");
+
+            var records = Utils.GetDataRecords(reader);
 
             foreach (var record in records)
                 items.Add(this.BindingDataRecordToModel<T>(record));
-            
+
+            reader.Close();
+
             if (!this._manageManually)
                 this._sqlExecutionProvider.Close();
 
@@ -83,10 +90,17 @@ namespace TOF.Framework.Data
                 this._sqlExecutionProvider.Open();
             
             List<dynamic> items = new List<dynamic>();
-            var records = this._sqlExecutionProvider.ExecuteQuery(Query.GetSqlStatement(), Query.GetParameters());
+            var reader = this._sqlExecutionProvider.ExecuteQuery(Query.GetSqlStatement(), Query.GetParameters());
+
+            if (reader == null)
+                throw new InvalidOperationException("E_DATAREADER_RETURNS_NULL");
+
+            var records = Utils.GetDataRecords(reader);
 
             foreach (var record in records)
                 items.Add(this.BindingDataRecordToModelDynamic(record));
+
+            reader.Close();
             
             if (!this._manageManually)
                 this._sqlExecutionProvider.Close();

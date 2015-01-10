@@ -135,8 +135,12 @@ namespace TOF.Framework.Data
             try
             {
                 executionProvider.Open();
-                var records = executionProvider.ExecuteProcedureQuery(this._procedureStrategy.GetProcedureName(), parameters);
+                var reader = executionProvider.ExecuteProcedureQuery(this._procedureStrategy.GetProcedureName(), parameters);
 
+                if (reader == null)
+                    throw new InvalidOperationException("E_DATAREADER_RETURNS_NULL");
+
+                var records = Utils.GetDataRecords(reader);
                 List<dynamic> items = new List<dynamic>();
 
                 foreach (var record in records)
@@ -159,6 +163,7 @@ namespace TOF.Framework.Data
                     items.Add(item);
                 }
 
+                reader.Close();
                 return items;
             }
             catch (Exception exception)

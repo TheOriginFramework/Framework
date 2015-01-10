@@ -12,7 +12,7 @@ namespace TOF.Framework.Data
         void Close();
         int Execute(string Statement, IEnumerable<IDbDataParameter> Parameters);
         int ExecuteProcedure(string ProcedureName, IEnumerable<IDbDataParameter> Parameters);
-        IEnumerable<IDataRecord> ExecuteQuery(string Statement, IEnumerable<IDbDataParameter> Parameters);
-        IEnumerable<IDataRecord> ExecuteProcedureQuery(string ProcedureName, IEnumerable<IDbDataParameter> Parameters);
+        IDataReader ExecuteQuery(string Statement, IEnumerable<IDbDataParameter> Parameters);
+        IDataReader ExecuteProcedureQuery(string ProcedureName, IEnumerable<IDbDataParameter> Parameters);
     }
 }

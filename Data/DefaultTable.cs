@@ -698,12 +698,19 @@ namespace TOF.Framework.Data
             ISqlExecutionTransactionProvider transactionProvider = executionProvider as ISqlExecutionTransactionProvider;
 
             executionProvider.Open();
-            var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
+            var reader = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
+
+            if (reader == null)
+                throw new InvalidOperationException("E_DATAREADER_RETURNS_NULL");
+
+            var records = Utils.GetDataRecords(reader);
+
             List<TModel> items = new List<TModel>();
 
             foreach (var record in records)
                 items.Add(this.BindingDataRecordToModel<TModel>(record, ModelStrategy.GetModelPropertyBindings()));
 
+            reader.Close();
             executionProvider.Close();
 
             return items;
@@ -726,8 +733,12 @@ namespace TOF.Framework.Data
             IDictionary<string, string> columns = selectorParser.Parse(Selector.Body);
 
             executionProvider.Open();
-            var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
+            var reader = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
 
+            if (reader == null)
+                throw new InvalidOperationException("E_DATAREADER_RETURNS_NULL");
+
+            var records = Utils.GetDataRecords(reader);
             List<dynamic> items = new List<dynamic>();
 
             foreach (var record in records)
@@ -753,6 +764,7 @@ namespace TOF.Framework.Data
                 items.Add(item);
             }
 
+            reader.Close();
             executionProvider.Close();
 
             return items;
@@ -988,13 +1000,19 @@ namespace TOF.Framework.Data
             var transactionProvider = executionProvider as ISqlExecutionTransactionProvider;
 
             executionProvider.Open();
-            var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
+            var reader = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
+
+            if (reader == null)
+                throw new InvalidOperationException("E_DATAREADER_RETURNS_NULL");
+
+            var records = Utils.GetDataRecords(reader);
 
             if (!records.Any())
                 throw new InvalidOperationException("ERROR_SQL_SUM_EXECUTION_FAILED");
 
             decimal result = Convert.ToDecimal(records.First().GetValue(0));
 
+            reader.Close();
             executionProvider.Close();
 
             return (TValue)Convert.ChangeType(result, typeof(TValue));
@@ -1037,7 +1055,13 @@ namespace TOF.Framework.Data
             }
 
             executionProvider.Open();
-            var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
+            var reader = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
+
+            if (reader == null)
+                throw new InvalidOperationException("E_DATAREADER_RETURNS_NULL");
+
+            var records = Utils.GetDataRecords(reader);
+
 
             List<dynamic> items = new List<dynamic>();
 
@@ -1063,6 +1087,7 @@ namespace TOF.Framework.Data
                 items.Add(item);
             }
 
+            reader.Close();
             executionProvider.Close();
 
             return items;
