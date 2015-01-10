@@ -64,7 +64,7 @@ namespace TOF.Framework.Data.SqlExecutionProviders
             return command.ExecuteNonQuery();
         }
 
-        public IDataReader ExecuteGetReader(string Statement, IEnumerable<IDbDataParameter> Parameters)
+        public IEnumerable<IDataRecord> ExecuteQuery(string Statement, IEnumerable<IDbDataParameter> Parameters)
         {
             SqlCommand command = new SqlCommand(Statement, this._connection);
 
@@ -77,7 +77,11 @@ namespace TOF.Framework.Data.SqlExecutionProviders
                     command.Parameters.Add(p as SqlParameter);
             }
 
-            return command.ExecuteReader();
+            IDataReader reader = command.ExecuteReader();
+            var records = this.GetDataRecords(reader);
+            reader.Close();
+
+            return records;
         }
 
 
@@ -95,7 +99,7 @@ namespace TOF.Framework.Data.SqlExecutionProviders
             return command.ExecuteNonQuery();
         }
 
-        public IDataReader ExecuteProcedureGetReader(string ProcedureName, IEnumerable<IDbDataParameter> Parameters)
+        public IEnumerable<IDataRecord> ExecuteProcedureQuery(string ProcedureName, IEnumerable<IDbDataParameter> Parameters)
         {
             SqlCommand command = new SqlCommand(ProcedureName, this._connection);
             command.CommandType = CommandType.StoredProcedure;
@@ -109,7 +113,17 @@ namespace TOF.Framework.Data.SqlExecutionProviders
                     command.Parameters.Add(p as SqlParameter);
             }
 
-            return command.ExecuteReader();
+            IDataReader reader = command.ExecuteReader();
+            var records = this.GetDataRecords(reader);
+            reader.Close();
+
+            return records;
+        }
+
+        private IEnumerable<IDataRecord> GetDataRecords(IDataReader reader)
+        {
+            while (reader.Read())
+                yield return reader;
         }
     }
 }

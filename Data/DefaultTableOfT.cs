@@ -692,9 +692,8 @@ namespace TOF.Framework.Data
 
             try
             {
-                reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
+                var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
                 items = new List<TModel>();
-                var records = Utils.GetDataRecords(reader);
 
                 foreach (var record in records)
                     items.Add(Utils.BindingDataRecordToModel<TModel>(record, ModelStrategy.GetModelPropertyBindings()));                
@@ -732,15 +731,14 @@ namespace TOF.Framework.Data
             ISqlExecutionTransactionProvider transactionProvider = executionProvider as ISqlExecutionTransactionProvider;
             SqlQueryNewTypeRenderColumnNode selectorParser = new Expressions.SqlQueryNewTypeRenderColumnNode(ModelStrategy);
             IDictionary<string, string> columns = selectorParser.Parse(Selector.Body);
-            IDataReader reader = null;
             List<dynamic> items = new List<dynamic>();
 
             executionProvider.Open();
+
             try
             {
-                reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
+                var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
                 items = new List<dynamic>();
-                var records = Utils.GetDataRecords(reader);
 
                 foreach (var record in records)
                 {
@@ -751,8 +749,8 @@ namespace TOF.Framework.Data
                     {
                         try
                         {
-                            if (reader.GetOrdinal(column.Value.Trim()) >= 0)
-                                ((IDictionary<string, object>)item).Add(column.Key.Trim(), reader.GetValue(reader.GetOrdinal(column.Value.Trim())));
+                            if (record.GetOrdinal(column.Value.Trim()) >= 0)
+                                ((IDictionary<string, object>)item).Add(column.Key.Trim(), record.GetValue(record.GetOrdinal(column.Value.Trim())));
                             else
                                 ((IDictionary<string, object>)item).Add(column.Key.Trim(), DBNull.Value);
                         }
@@ -771,7 +769,6 @@ namespace TOF.Framework.Data
             }
             finally
             {
-                reader.Close();
                 executionProvider.Close();
 
                 // clean where and order by conditions.
@@ -922,14 +919,13 @@ namespace TOF.Framework.Data
             var transactionProvider = executionProvider as ISqlExecutionTransactionProvider;
 
             executionProvider.Open();
-            IDataReader reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
+            var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
 
-            if (!reader.Read())
+            if (!records.Any())
                 throw new InvalidOperationException("ERROR_SQL_SUM_EXECUTION_FAILED");
 
-            decimal result = Convert.ToDecimal(reader.GetValue(0));
+            decimal result = Convert.ToDecimal(records.First().GetValue(0));
 
-            reader.Close();
             executionProvider.Close();
 
             // clean where and order by conditions.
@@ -971,11 +967,11 @@ namespace TOF.Framework.Data
             }
 
             executionProvider.Open();
-            IDataReader reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
+            var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
 
             List<dynamic> items = new List<dynamic>();
 
-            while (reader.Read())
+            foreach (var record in records)
             {
                 dynamic item = new ExpandoObject();
 
@@ -983,8 +979,8 @@ namespace TOF.Framework.Data
                 {
                     try
                     {
-                        if (reader.GetOrdinal(column.Value.Trim()) >= 0)
-                            ((IDictionary<string, object>)item).Add(column.Key.Trim(), reader.GetValue(reader.GetOrdinal(column.Value.Trim())));
+                        if (record.GetOrdinal(column.Value.Trim()) >= 0)
+                            ((IDictionary<string, object>)item).Add(column.Key.Trim(), record.GetValue(record.GetOrdinal(column.Value.Trim())));
                         else
                             ((IDictionary<string, object>)item).Add(column.Key.Trim(), DBNull.Value);
                     }
@@ -997,7 +993,6 @@ namespace TOF.Framework.Data
                 items.Add(item);
             }
 
-            reader.Close();
             executionProvider.Close();
 
             // clean where and order by conditions.

@@ -135,10 +135,9 @@ namespace TOF.Framework.Data
             try
             {
                 executionProvider.Open();
-                IDataReader reader = executionProvider.ExecuteProcedureGetReader(this._procedureStrategy.GetProcedureName(), parameters);
+                var records = executionProvider.ExecuteProcedureQuery(this._procedureStrategy.GetProcedureName(), parameters);
 
                 List<dynamic> items = new List<dynamic>();
-                var records = this.GetDataRecords(reader);
 
                 foreach (var record in records)
                 {
@@ -149,7 +148,7 @@ namespace TOF.Framework.Data
                     {
                         try
                         {
-                            ((IDictionary<string, object>)item).Add(record.GetName(i).Trim(), reader.GetValue(i));
+                            ((IDictionary<string, object>)item).Add(record.GetName(i).Trim(), record.GetValue(i));
                         }
                         catch (IndexOutOfRangeException)
                         {
@@ -160,7 +159,6 @@ namespace TOF.Framework.Data
                     items.Add(item);
                 }
 
-                reader.Close();
                 return items;
             }
             catch (Exception exception)

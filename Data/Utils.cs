@@ -31,12 +31,6 @@ namespace TOF.Framework.Data
                 .Resolve<ISqlExecutionProvider>(new object[] { ConnectionString });
         }
 
-        public static IEnumerable<IDataRecord> GetDataRecords(IDataReader reader)
-        {
-            while (reader.Read())
-                yield return reader;
-        }
-
         public static IEnumerable<IDbDataParameter> BindingModelPropertyToParameter<TModel>(
             TModel Model, IEnumerable<IPropertyBindingInfo> PropertyBindingInfoItems, IEnumerable<IDbDataParameter> Parameters)
         {

@@ -64,18 +64,13 @@ namespace TOF.Framework.Data
         {
             if (!this._manageManually)
                 this._sqlExecutionProvider.Open();
-
-            var reader = this._sqlExecutionProvider.ExecuteGetReader(
-                Query.GetSqlStatement(), Query.GetParameters());
-
+            
             List<T> items = new List<T>();
-            var records = this.GetDataRecords(reader);
+            var records = this._sqlExecutionProvider.ExecuteQuery(Query.GetSqlStatement(), Query.GetParameters());
 
             foreach (var record in records)
                 items.Add(this.BindingDataRecordToModel<T>(record));
-
-            reader.Close();
-
+            
             if (!this._manageManually)
                 this._sqlExecutionProvider.Close();
 
@@ -86,18 +81,13 @@ namespace TOF.Framework.Data
         {
             if (!this._manageManually)
                 this._sqlExecutionProvider.Open();
-
-            var reader = this._sqlExecutionProvider.ExecuteGetReader(
-                Query.GetSqlStatement(), Query.GetParameters());
-
+            
             List<dynamic> items = new List<dynamic>();
-            var records = this.GetDataRecords(reader);
+            var records = this._sqlExecutionProvider.ExecuteQuery(Query.GetSqlStatement(), Query.GetParameters());
 
             foreach (var record in records)
                 items.Add(this.BindingDataRecordToModelDynamic(record));
-
-            reader.Close();
-
+            
             if (!this._manageManually)
                 this._sqlExecutionProvider.Close();
 

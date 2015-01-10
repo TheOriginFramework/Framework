@@ -698,15 +698,12 @@ namespace TOF.Framework.Data
             ISqlExecutionTransactionProvider transactionProvider = executionProvider as ISqlExecutionTransactionProvider;
 
             executionProvider.Open();
-            IDataReader reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
-
+            var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
             List<TModel> items = new List<TModel>();
-            var records = this.GetDataRecords(reader);
 
             foreach (var record in records)
                 items.Add(this.BindingDataRecordToModel<TModel>(record, ModelStrategy.GetModelPropertyBindings()));
 
-            reader.Close();
             executionProvider.Close();
 
             return items;
@@ -729,10 +726,9 @@ namespace TOF.Framework.Data
             IDictionary<string, string> columns = selectorParser.Parse(Selector.Body);
 
             executionProvider.Open();
-            IDataReader reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
+            var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
 
             List<dynamic> items = new List<dynamic>();
-            var records = this.GetDataRecords(reader);
 
             foreach (var record in records)
             {
@@ -743,8 +739,8 @@ namespace TOF.Framework.Data
                 {
                     try
                     {
-                        if (reader.GetOrdinal(column.Value.Trim()) >= 0)
-                            ((IDictionary<string, object>)item).Add(column.Key.Trim(), reader.GetValue(reader.GetOrdinal(column.Value.Trim())));
+                        if (record.GetOrdinal(column.Value.Trim()) >= 0)
+                            ((IDictionary<string, object>)item).Add(column.Key.Trim(), record.GetValue(record.GetOrdinal(column.Value.Trim())));
                         else
                             ((IDictionary<string, object>)item).Add(column.Key.Trim(), DBNull.Value);
                     }
@@ -757,7 +753,6 @@ namespace TOF.Framework.Data
                 items.Add(item);
             }
 
-            reader.Close();
             executionProvider.Close();
 
             return items;
@@ -993,14 +988,13 @@ namespace TOF.Framework.Data
             var transactionProvider = executionProvider as ISqlExecutionTransactionProvider;
 
             executionProvider.Open();
-            IDataReader reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
+            var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
 
-            if (!reader.Read())
+            if (!records.Any())
                 throw new InvalidOperationException("ERROR_SQL_SUM_EXECUTION_FAILED");
 
-            decimal result = Convert.ToDecimal(reader.GetValue(0));
+            decimal result = Convert.ToDecimal(records.First().GetValue(0));
 
-            reader.Close();
             executionProvider.Close();
 
             return (TValue)Convert.ChangeType(result, typeof(TValue));
@@ -1043,11 +1037,11 @@ namespace TOF.Framework.Data
             }
 
             executionProvider.Open();
-            IDataReader reader = executionProvider.ExecuteGetReader(this._tableLastQueryStatement, null);
+            var records = executionProvider.ExecuteQuery(this._tableLastQueryStatement, null);
 
             List<dynamic> items = new List<dynamic>();
 
-            while (reader.Read())
+            foreach (var record in records)
             {
                 dynamic item = new ExpandoObject();
 
@@ -1055,8 +1049,8 @@ namespace TOF.Framework.Data
                 {
                     try
                     {
-                        if (reader.GetOrdinal(column.Value.Trim()) >= 0)
-                            ((IDictionary<string, object>)item).Add(column.Key.Trim(), reader.GetValue(reader.GetOrdinal(column.Value.Trim())));
+                        if (record.GetOrdinal(column.Value.Trim()) >= 0)
+                            ((IDictionary<string, object>)item).Add(column.Key.Trim(), record.GetValue(record.GetOrdinal(column.Value.Trim())));
                         else
                             ((IDictionary<string, object>)item).Add(column.Key.Trim(), DBNull.Value);
                     }
@@ -1069,7 +1063,6 @@ namespace TOF.Framework.Data
                 items.Add(item);
             }
 
-            reader.Close();
             executionProvider.Close();
 
             return items;

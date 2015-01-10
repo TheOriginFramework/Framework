@@ -96,10 +96,9 @@ namespace TOF.Framework.Data
             IDictionary<string, string> columns = selectorParser.Parse(this._selector.Body);
 
             executionProvider.Open();
-            IDataReader reader = executionProvider.ExecuteGetReader(sql, parameters);
+            var records = executionProvider.ExecuteQuery(sql, parameters);
 
             List<dynamic> items = new List<dynamic>();
-            var records = Utils.GetDataRecords(reader);
 
             foreach (var record in records)
             {
@@ -110,8 +109,8 @@ namespace TOF.Framework.Data
                 {
                     try
                     {
-                        if (reader.GetOrdinal(column.Value.Trim()) >= 0)
-                            ((IDictionary<string, object>)item).Add(column.Key.Trim(), reader.GetValue(reader.GetOrdinal(column.Value.Trim())));
+                        if (record.GetOrdinal(column.Value.Trim()) >= 0)
+                            ((IDictionary<string, object>)item).Add(column.Key.Trim(), record.GetValue(record.GetOrdinal(column.Value.Trim())));
                         else
                             ((IDictionary<string, object>)item).Add(column.Key.Trim(), DBNull.Value);
                     }
@@ -124,7 +123,6 @@ namespace TOF.Framework.Data
                 items.Add(item);
             }
 
-            reader.Close();
             executionProvider.Close();
 
             return items;

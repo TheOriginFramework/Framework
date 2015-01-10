@@ -122,15 +122,13 @@ namespace TOF.Framework.Data
             ISqlExecutionTransactionProvider transactionProvider = executionProvider as ISqlExecutionTransactionProvider;
 
             executionProvider.Open();
-            IDataReader reader = executionProvider.ExecuteGetReader(sql, parameters);
+            var records = executionProvider.ExecuteQuery(sql, parameters);
 
             List<TModel> items = new List<TModel>();
-            var records = Utils.GetDataRecords(reader);
 
             foreach (var record in records)
                 items.Add(Utils.BindingDataRecordToModel<TModel>(record, this._queryTable.GetTableModelStrategy().GetModelPropertyBindings()));
 
-            reader.Close();
             executionProvider.Close();
 
             return items;
