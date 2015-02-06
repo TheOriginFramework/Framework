@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Consoles", "Consoles", "{47
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ranger.TestConsole", "Ranger.TestConsole\Ranger.TestConsole.csproj", "{610FCC51-8A8A-47BB-B3E0-48988DD2A2D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ranger.SeleniumWebTest.Console", "Ranger.SeleniumWebTest.Console\Ranger.SeleniumWebTest.Console.csproj", "{E1FC2566-6F63-4D81-ACB5-874541F0F785}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{610FCC51-8A8A-47BB-B3E0-48988DD2A2D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{610FCC51-8A8A-47BB-B3E0-48988DD2A2D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{610FCC51-8A8A-47BB-B3E0-48988DD2A2D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1FC2566-6F63-4D81-ACB5-874541F0F785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1FC2566-6F63-4D81-ACB5-874541F0F785}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1FC2566-6F63-4D81-ACB5-874541F0F785}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1FC2566-6F63-4D81-ACB5-874541F0F785}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,5 +79,6 @@ Global
 		{E5033157-6CF3-4AC0-8D53-A5133AD547E3} = {A4531A78-73E7-47B5-B81B-2A2169493B33}
 		{963ACE83-F4E5-4165-A29C-7D830548F231} = {F5D1AF1A-2046-4872-883E-71CA8BFA80C5}
 		{610FCC51-8A8A-47BB-B3E0-48988DD2A2D7} = {47EB8005-BE89-4D22-96A0-DBAEF6E3CE4B}
+		{E1FC2566-6F63-4D81-ACB5-874541F0F785} = {47EB8005-BE89-4D22-96A0-DBAEF6E3CE4B}
 	EndGlobalSection
 EndGlobal

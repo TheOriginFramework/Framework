@@ -80,6 +80,38 @@ namespace TOF.Framework.Data.SqlExecutionProviders
             return command.ExecuteReader();
         }
 
+        public object ExecuteQueryGetScalar(string Statement, IEnumerable<IDbDataParameter> Parameters)
+        {
+            SqlCommand command = new SqlCommand(Statement, this._connection);
+
+            if (this._transactionContext != null)
+                command.Transaction = this._transactionContext;
+
+            if (Parameters != null)
+            {
+                foreach (var p in Parameters)
+                    command.Parameters.Add(p as SqlParameter);
+            }
+
+            object result = command.ExecuteScalar();
+            return result;
+        }
+
+        public object ExecuteProcedureQueryGetScalar(string ProcedureName, IEnumerable<IDbDataParameter> Parameters)
+        {
+            SqlCommand command = new SqlCommand(ProcedureName, this._connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            if (this._transactionContext != null)
+                command.Transaction = this._transactionContext;
+
+            foreach (var p in Parameters)
+                command.Parameters.Add(p as SqlParameter);
+
+            object result = command.ExecuteScalar();
+            return result;
+        }
+
 
         public int ExecuteProcedure(string ProcedureName, IEnumerable<IDbDataParameter> Parameters)
         {

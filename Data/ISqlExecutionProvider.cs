@@ -13,6 +13,8 @@ namespace TOF.Framework.Data
         int Execute(string Statement, IEnumerable<IDbDataParameter> Parameters);
         int ExecuteProcedure(string ProcedureName, IEnumerable<IDbDataParameter> Parameters);
         IDataReader ExecuteQuery(string Statement, IEnumerable<IDbDataParameter> Parameters);
+        object ExecuteQueryGetScalar(string Statement, IEnumerable<IDbDataParameter> Parameters);
         IDataReader ExecuteProcedureQuery(string ProcedureName, IEnumerable<IDbDataParameter> Parameters);
+        object ExecuteProcedureQueryGetScalar(string ProcedureName, IEnumerable<IDbDataParameter> Parameters);
     }
 }

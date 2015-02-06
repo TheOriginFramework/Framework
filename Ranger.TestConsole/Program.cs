@@ -15,34 +15,47 @@ namespace Ranger.TestConsole
         {
             Application.Initialize(builder => builder.RegisterTypesInAssembly(typeof(DbClient).Assembly));
             List<Task> dataReaderTasks = new List<Task>();
+            int count = 60000;
 
-            for (int i = 0; i < 100; i++)
-            {
-                dataReaderTasks.Add(Task.Run(() =>
-                    {
-                        Console.WriteLine("Thread {0}: Data Load begins.", Task.CurrentId);
+            //for (int i = 0; i < count; i++)
+            //{
+            //    dataReaderTasks.Add(new Task(() =>
+            //        {
+            //            Console.WriteLine("Thread {0}: Data Load begins.", Task.CurrentId);
                         
-                        var repo = new CandidateRepo();
+            //            var repo = new CandidateRepo();
 
-                        try
-                        {
-                            var candidate = repo.List();
-                            Console.WriteLine("Thread {0}: Data Load Completed.", Task.CurrentId);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("Thread {0}: Report Error: {1}\r\n{2}", Task.CurrentId, e.Message, e.StackTrace);
-                        }
+            //            try
+            //            {
+            //                var candidate = repo.List();
+            //                Console.WriteLine("Thread {0}: Data Load Completed.", Task.CurrentId);
+            //            }
+            //            catch (Exception e)
+            //            {
+            //                Console.WriteLine("Thread {0}: Report Error: {1}\r\n{2}", Task.CurrentId, e.Message, e.StackTrace);
+            //            }
 
-                    }));
-            }
+            //        }));
+            //}
 
-            do
-            {
-                Thread.Sleep(1000);
-            }
-            while (dataReaderTasks.Where(t => t.Status == TaskStatus.RanToCompletion).Count() == dataReaderTasks.Count());
+            // fire tasks.
+            var result = Parallel.For(1, count, i =>
+                {
+                    Console.WriteLine("Thread {0}: Data Load begins.", i);
 
+                    var repo = new CandidateRepo();
+
+                    try
+                    {
+                        var candidate = repo.List();
+                        Console.WriteLine("Thread {0}: Data Load Completed.", i);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Thread {0}: Report Error: {1}\r\n{2}", i, e.Message, e.StackTrace);
+                    }
+                });
+            
             Console.WriteLine("Task Completed.");
             Console.Read();
         }

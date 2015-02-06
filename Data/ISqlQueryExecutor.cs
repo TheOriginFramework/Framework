@@ -15,6 +15,8 @@ namespace TOF.Framework.Data
         // execute query and commands.
         IEnumerable<dynamic> ExecuteQuery(ISqlQuery Query);
         IEnumerable<T> ExecuteQuery<T>(ISqlQuery Query);
+        object ExecuteQueryGetScalar(ISqlQuery Query);
+        T ExecuteQueryGetScalar<T>(ISqlQuery Query);
         int Execute(ISqlQuery Query);
         void Execute(IEnumerable<ISqlQuery> QueryBatch);
     }

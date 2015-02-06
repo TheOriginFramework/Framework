@@ -25,23 +25,6 @@ namespace TOF.Framework.Data
 
         public DefaultSqlQueryExecutor()
         {
-            //var configSectionManager = ConfigurationMapManager.FromSection("kfx.configuration");
-            //var dbConfigMap = configSectionManager
-            //    .DefineMap<DbConfiguration, DatabaseConfigurationElement>()
-            //    .FromCollection<DatabaseConfigurationElementCollection>();
-
-            //dbConfigMap.Property(c => c.Name).Map(c => c.Name);
-            //dbConfigMap.Property(c => c.ConnectionString).Map(c => c.ConnectionString);
-
-            //var dbconfiguration =
-            //    configSectionManager.ExtractValuesFromCollection<DbConfiguration, DatabaseConfigurationElement>();
-
-            //var query = dbconfiguration.Where(c => c.Name == "Default");
-
-            //if (!query.Any())
-            //    throw new Exceptions.DbEnvironmentException(
-            //        "ERROR_MISSING_CONNECTION_STRING", "DbClient.ctor()", "");
-
             this._connectionString = "";
             this.Initialize();
         }
@@ -106,6 +89,30 @@ namespace TOF.Framework.Data
                 this._sqlExecutionProvider.Close();
 
             return items;
+        }
+
+        public object ExecuteQueryGetScalar(ISqlQuery Query)
+        {
+            if (!this._manageManually)
+                this._sqlExecutionProvider.Open();
+
+            object result = this._sqlExecutionProvider.ExecuteQueryGetScalar(
+                Query.GetSqlStatement(), Query.GetParameters());
+            
+            if (!this._manageManually)
+                this._sqlExecutionProvider.Close();
+
+            return result;
+        }
+
+        public T ExecuteQueryGetScalar<T>(ISqlQuery Query)
+        {
+            object result = this.ExecuteQueryGetScalar(Query);
+
+            if (result == null || result == DBNull.Value)
+                return default(T);
+            else
+                return (T)result;
         }
 
         public int Execute(ISqlQuery Query)
